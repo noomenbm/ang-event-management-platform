@@ -1,1 +1,55 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f2937;
+  background: #f7f9fc;
+}
+
+body {
+  margin: 0;
+}
+
+h1 {
+  margin: 0 0 0.75rem;
+  color: #111827;
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1.1;
+}
+
+p {
+  margin: 0 0 1rem;
+  line-height: 1.6;
+}
+
+a {
+  color: #0f4c81;
+}
+
+button {
+  border: 1px solid #9aa7b7;
+  border-radius: 0.4rem;
+  background: #ffffff;
+  color: #1f2937;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.55rem 0.8rem;
+}
+
+button:hover {
+  background: #edf2f7;
+}
+
+:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+
+.page-section {
+  background: #ffffff;
+  border: 1px solid #d7dde5;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}

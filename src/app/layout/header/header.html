@@ -1,0 +1,21 @@
+<header class="site-header">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <nav class="nav" aria-label="Primary navigation">
+    <a class="app-title" routerLink="/events">Event Management Platform</a>
+
+    <div class="nav-actions">
+      <a
+        routerLink="/events"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Events
+      </a>
+      <a routerLink="/bookings" routerLinkActive="active">My Bookings</a>
+      <button type="button" aria-label="Theme toggle placeholder">
+        Toggle theme
+      </button>
+    </div>
+  </nav>
+</header>
