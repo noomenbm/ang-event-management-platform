@@ -2,15 +2,45 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.19.
 
+## Current Project Status
+
+This course project is being built incrementally. The application currently has the shell, routing, placeholder pages, domain models, API base configuration, and json-server sample data. Event listing, search, filters, booking forms, cancellation, and theme behavior are not implemented yet.
+
 ## Development server
 
 To start a local development server, run:
 
 ```bash
-ng serve
+npm start
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+
+## Local API Server
+
+To start json-server with the sample event and booking data, run:
+
+```bash
+npm run server
+```
+
+The API runs at `http://localhost:3000`.
+
+Useful endpoints include:
+
+```text
+GET http://localhost:3000/events
+GET http://localhost:3000/events/1
+GET http://localhost:3000/bookings?userId=user1
+```
+
+## Run Frontend and API Together
+
+To start Angular and json-server at the same time, run:
+
+```bash
+npm run dev
+```
 
 ## Code scaffolding
 
