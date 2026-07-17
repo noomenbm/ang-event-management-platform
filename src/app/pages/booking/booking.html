@@ -1,4 +1,182 @@
-<section class="page-section" aria-labelledby="booking-title">
-  <h1 id="booking-title">Book Tickets</h1>
-  <p>The multi-step ticket booking flow will be implemented in a future commit.</p>
+<section class="booking-page" aria-labelledby="booking-title">
+  <a class="back-link" routerLink="/events">Back to Events</a>
+
+  @if (isLoading()) {
+    <div class="state-panel" role="status" aria-live="polite">
+      <p>Loading booking information...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="state-panel error-panel" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <button type="button" (click)="loadEvent()">Retry</button>
+    </div>
+  } @else if (event(); as selectedEvent) {
+    <header class="booking-header">
+      <p class="eyebrow">Booking</p>
+      <h1 id="booking-title">{{ selectedEvent.title }}</h1>
+      <p>{{ selectedEvent.date | date: 'fullDate' }}</p>
+    </header>
+
+    <ol class="progress-list" aria-label="Booking progress">
+      <li [class.active-step]="currentStep() === 1">Step 1 of 3: Tickets</li>
+      <li [class.active-step]="currentStep() === 2">Step 2 of 3: Attendees</li>
+      <li [class.active-step]="currentStep() === 3">Step 3 of 3: Summary</li>
+    </ol>
+
+    @if (currentStep() === 1) {
+      <section class="booking-panel" aria-labelledby="select-tickets-title">
+        <h2 id="select-tickets-title">Select Tickets</h2>
+
+        <div class="ticket-list">
+          @for (ticket of selectedEvent.ticketTypes; track ticket.id) {
+            <article class="ticket-row">
+              <div>
+                <h3>{{ ticket.name }}</h3>
+                <p>
+                  @if (ticket.price === 0) {
+                    Free
+                  } @else {
+                    {{ ticket.price | currency: 'CAD' : 'symbol' : '1.2-2' }}
+                  }
+                  · {{ ticket.available }} available
+                </p>
+              </div>
+
+              <label>
+                Quantity
+                <input
+                  type="number"
+                  min="0"
+                  [max]="ticket.available < 10 ? ticket.available : 10"
+                  step="1"
+                  [value]="ticketQuantity(ticket.id)"
+                  (input)="updateQuantity(ticket.id, $any($event.target).value, ticket.available)"
+                />
+              </label>
+            </article>
+          }
+        </div>
+
+        @if (quantityError()) {
+          <p class="validation-message">{{ quantityError() }}</p>
+        }
+
+        <aside class="summary-panel" aria-label="Ticket price summary">
+          <h3>Price Summary</h3>
+          @if (selectedTickets().length === 0) {
+            <p>No tickets selected yet.</p>
+          } @else {
+            <ul>
+              @for (ticket of selectedTickets(); track ticket.type) {
+                <li>
+                  <span>{{ ticket.quantity }} x {{ ticket.type }}</span>
+                  <span>{{ ticket.quantity * ticket.price | currency: 'CAD' : 'symbol' : '1.2-2' }}</span>
+                </li>
+              }
+            </ul>
+          }
+          <p>Total tickets: {{ totalTickets() }}</p>
+          <p class="total-amount">
+            Total: {{ totalAmount() | currency: 'CAD' : 'symbol' : '1.2-2' }}
+          </p>
+        </aside>
+
+        <div class="button-row">
+          <button
+            type="button"
+            class="primary-button"
+            [disabled]="totalTickets() === 0"
+            (click)="continueToAttendees()"
+          >
+            Continue
+          </button>
+        </div>
+      </section>
+    } @else if (currentStep() === 2) {
+      <section class="booking-panel" aria-labelledby="attendee-details-title">
+        <h2 id="attendee-details-title">Attendee Details</h2>
+
+        <form [formGroup]="attendeeForm" (submit)="$event.preventDefault()">
+          <div formArrayName="attendees" class="attendee-list">
+            @for (attendeeGroup of attendees.controls; track $index) {
+              <fieldset class="attendee-card" [formGroupName]="$index">
+                <legend>{{ attendeeLabel($index) }}</legend>
+
+                <div class="form-grid">
+                  <label>
+                    Name
+                    <input type="text" formControlName="name" />
+                  </label>
+                  @if (shouldShowError(attendeeGroup.controls.name)) {
+                    <p class="validation-message">Enter a name with at least 2 characters.</p>
+                  }
+
+                  <label>
+                    Email
+                    <input type="email" formControlName="email" />
+                  </label>
+                  @if (shouldShowError(attendeeGroup.controls.email)) {
+                    <p class="validation-message">Enter a valid email address.</p>
+                  }
+
+                  <label>
+                    Phone
+                    <input type="tel" formControlName="phone" />
+                  </label>
+                  @if (shouldShowError(attendeeGroup.controls.phone)) {
+                    <p class="validation-message">Enter a phone number with at least 10 digits.</p>
+                  }
+                </div>
+              </fieldset>
+            }
+          </div>
+        </form>
+
+        <div class="button-row">
+          <button type="button" (click)="goToStepOne()">Back</button>
+          <button type="button" class="primary-button" (click)="continueToSummary()">
+            Continue
+          </button>
+        </div>
+      </section>
+    } @else {
+      <section class="booking-panel" aria-labelledby="summary-title">
+        <h2 id="summary-title">Booking Summary</h2>
+        <p>{{ selectedEvent.title }}</p>
+        <p>{{ selectedEvent.date | date: 'fullDate' }}</p>
+
+        <h3>Tickets</h3>
+        <ul class="summary-list">
+          @for (ticket of selectedTickets(); track ticket.type) {
+            <li>
+              {{ ticket.quantity }} x {{ ticket.type }} -
+              {{ ticket.quantity * ticket.price | currency: 'CAD' : 'symbol' : '1.2-2' }}
+            </li>
+          }
+        </ul>
+
+        <h3>Attendees</h3>
+        <ul class="summary-list">
+          @for (name of attendeeNames(); track name) {
+            <li>{{ name }}</li>
+          }
+        </ul>
+
+        <p class="total-amount">
+          Total: {{ totalAmount() | currency: 'CAD' : 'symbol' : '1.2-2' }}
+        </p>
+
+        <p class="confirmation-note">
+          Final booking submission will be completed in the next implementation pass.
+        </p>
+
+        <div class="button-row">
+          <button type="button" (click)="currentStep.set(2)">Back</button>
+          <button type="button" class="primary-button" disabled>
+            Confirm Booking Coming Soon
+          </button>
+        </div>
+      </section>
+    }
+  }
 </section>
