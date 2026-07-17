@@ -1,4 +1,155 @@
-<section class="page-section" aria-labelledby="my-bookings-title">
-  <h1 id="my-bookings-title">My Bookings</h1>
-  <p>Your booking list, filters, and cancellation actions will be added later.</p>
+<section class="my-bookings-page" aria-labelledby="my-bookings-title">
+  <header class="page-header">
+    <p class="eyebrow">Account</p>
+    <h1 id="my-bookings-title">My Bookings</h1>
+    <p>Review your event bookings and cancel eligible upcoming reservations.</p>
+  </header>
+
+  @if (notificationMessage()) {
+    <div
+      class="notification"
+      [class.error-notification]="notificationType() === 'error'"
+      role="status"
+      aria-live="polite"
+    >
+      {{ notificationMessage() }}
+    </div>
+  }
+
+  <div class="filter-panel" aria-label="Booking filters">
+    <button
+      type="button"
+      [class.active-filter]="selectedFilter() === 'all'"
+      (click)="setFilter('all')"
+    >
+      All
+    </button>
+    <button
+      type="button"
+      [class.active-filter]="selectedFilter() === 'upcoming'"
+      (click)="setFilter('upcoming')"
+    >
+      Upcoming
+    </button>
+    <button
+      type="button"
+      [class.active-filter]="selectedFilter() === 'past'"
+      (click)="setFilter('past')"
+    >
+      Past
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="state-panel" role="status" aria-live="polite">
+      <p>Loading bookings...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="state-panel error-panel" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <button type="button" (click)="loadBookings()">Retry</button>
+    </div>
+  } @else if (bookings().length === 0) {
+    <div class="state-panel">
+      <h2>No bookings found</h2>
+      <p>Confirmed bookings will appear here after checkout.</p>
+    </div>
+  } @else if (filteredBookings().length === 0) {
+    <div class="state-panel">
+      <h2>{{ emptyMessage() }}</h2>
+      <p>Try a different booking filter.</p>
+    </div>
+  } @else {
+    <div class="bookings-list">
+      @for (booking of filteredBookings(); track booking.id) {
+        <article class="booking-card">
+          <header class="booking-card-header">
+            <div>
+              <p class="booking-reference">{{ booking.referenceNumber }}</p>
+              <h2>{{ booking.eventTitle }}</h2>
+              <p>{{ booking.eventDate | date: 'fullDate' }}</p>
+            </div>
+            <span class="status-badge" [class.cancelled-status]="booking.status === 'cancelled'">
+              {{ booking.status | titlecase }}
+            </span>
+          </header>
+
+          <dl class="booking-facts">
+            <div>
+              <dt>Tickets</dt>
+              <dd>{{ totalTickets(booking) }}</dd>
+            </div>
+            <div>
+              <dt>Total</dt>
+              <dd>{{ booking.totalAmount | currency: 'CAD' : 'symbol' : '1.2-2' }}</dd>
+            </div>
+            <div>
+              <dt>Booked</dt>
+              <dd>{{ booking.bookingDate | date: 'mediumDate' }}</dd>
+            </div>
+          </dl>
+
+          <div class="ticket-details">
+            <h3>Ticket details</h3>
+            <ul>
+              @for (ticket of booking.tickets; track ticket.type) {
+                <li>
+                  <span>{{ ticket.quantity }} x {{ ticket.type }}</span>
+                  <span>{{ ticket.quantity * ticket.price | currency: 'CAD' : 'symbol' : '1.2-2' }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <div class="card-actions">
+            @if (canCancel(booking)) {
+              <button type="button" class="danger-button" (click)="requestCancellation(booking)">
+                Cancel Booking
+              </button>
+            } @else if (booking.status === 'cancelled') {
+              <span class="disabled-note">Cancelled</span>
+            } @else {
+              <span class="disabled-note">Past booking</span>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+
+  @if (bookingToCancel(); as booking) {
+    <div class="dialog-backdrop" (click)="closeCancellation()">
+      <section
+        class="cancel-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cancel-dialog-title"
+        (click)="$event.stopPropagation()"
+      >
+        <h2 id="cancel-dialog-title">Cancel booking?</h2>
+        <p>
+          This will mark your booking for <strong>{{ booking.eventTitle }}</strong> as cancelled.
+        </p>
+        <p class="booking-reference">{{ booking.referenceNumber }}</p>
+
+        <div class="button-row">
+          <button type="button" (click)="closeCancellation()" [disabled]="isCancelling()">
+            Keep Booking
+          </button>
+          <button
+            type="button"
+            class="danger-button"
+            [disabled]="isCancelling()"
+            (click)="confirmCancellation()"
+          >
+            @if (isCancelling()) {
+              Cancelling...
+            } @else {
+              Confirm Cancellation
+            }
+          </button>
+        </div>
+      </section>
+    </div>
+  }
 </section>

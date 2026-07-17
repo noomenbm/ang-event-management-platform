@@ -1,4 +1,5 @@
-import { BookingTicket, Event } from '../../models';
+import { Attendee, BookingTicket, Event } from '../../models';
+import { BookingCreatePayload } from '../../services/bookings.service';
 
 export interface AttendeeSlot {
   ticketType: string;
@@ -48,4 +49,41 @@ export function buildAttendeeSlots(tickets: BookingTicket[]): AttendeeSlot[] {
       index
     }))
   );
+}
+
+export function generateBookingReference(date = new Date()): string {
+  const year = date.getFullYear();
+  const timestamp = date.getTime().toString(36).toUpperCase().slice(-4);
+  const random = Math.random().toString(36).toUpperCase().slice(2, 5);
+
+  return `BK-${year}-${timestamp}${random}`;
+}
+
+export function bookingDateValue(date: Date = new Date()): string {
+  return [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, '0'),
+    String(date.getDate()).padStart(2, '0')
+  ].join('-');
+}
+
+export function buildBookingCreatePayload(
+  event: Event,
+  tickets: BookingTicket[],
+  attendees: Attendee[],
+  referenceNumber: string,
+  bookingDate: string
+): BookingCreatePayload {
+  return {
+    userId: 'user1',
+    eventId: event.id,
+    eventTitle: event.title,
+    eventDate: event.date,
+    tickets,
+    attendees,
+    totalAmount: totalAmount(tickets),
+    status: 'confirmed',
+    bookingDate,
+    referenceNumber
+  };
 }

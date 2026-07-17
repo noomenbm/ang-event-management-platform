@@ -12,13 +12,17 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
-import { Attendee, BookingTicket, Event } from '../../models';
+import { Attendee, Booking as CreatedBooking, BookingTicket, Event } from '../../models';
+import { BookingsService } from '../../services/bookings.service';
 import { EventsService } from '../../services/events.service';
 import {
   AttendeeSlot,
   buildAttendeeSlots,
+  buildBookingCreatePayload,
   buildBookingTickets,
+  bookingDateValue,
   clampQuantity,
+  generateBookingReference,
   hasSelectedTicket,
   totalAmount,
   totalTickets
@@ -39,6 +43,7 @@ type BookingStep = 1 | 2 | 3;
   styleUrl: './booking.css'
 })
 export class Booking implements OnInit {
+  private readonly bookingsService = inject(BookingsService);
   private readonly eventsService = inject(EventsService);
   private readonly formBuilder = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
@@ -47,12 +52,17 @@ export class Booking implements OnInit {
     attendees: this.formBuilder.array<FormGroup<AttendeeForm>>([])
   });
   protected readonly attendeeSlots = signal<AttendeeSlot[]>([]);
+  protected readonly createdBooking = signal<CreatedBooking | null>(null);
   protected readonly currentStep = signal<BookingStep>(1);
   protected readonly errorMessage = signal('');
   protected readonly event = signal<Event | null>(null);
   protected readonly isLoading = signal(false);
+  protected readonly isSubmitting = signal(false);
+  protected readonly notificationMessage = signal('');
+  protected readonly notificationType = signal<'success' | 'error'>('success');
   protected readonly quantityError = signal('');
   protected readonly quantities = signal<ReadonlyMap<string, number>>(new Map());
+  protected readonly submitError = signal('');
   protected readonly selectedTickets = computed<BookingTicket[]>(() => {
     const selectedEvent = this.event();
 
@@ -111,10 +121,12 @@ export class Booking implements OnInit {
     nextQuantities.set(ticketId, clampQuantity(parsedValue, available));
     this.quantities.set(nextQuantities);
     this.quantityError.set('');
+    this.submitError.set('');
     this.syncAttendeeForms();
   }
 
   protected goToStepOne(): void {
+    this.submitError.set('');
     this.currentStep.set(1);
   }
 
@@ -125,6 +137,7 @@ export class Booking implements OnInit {
     }
 
     this.quantityError.set('');
+    this.submitError.set('');
     this.syncAttendeeForms();
     this.currentStep.set(2);
   }
@@ -135,7 +148,59 @@ export class Booking implements OnInit {
       return;
     }
 
+    this.submitError.set('');
     this.currentStep.set(3);
+  }
+
+  protected goToStepTwo(): void {
+    this.submitError.set('');
+    this.currentStep.set(2);
+  }
+
+  protected confirmBooking(): void {
+    const selectedEvent = this.event();
+
+    if (this.isSubmitting() || this.createdBooking()) {
+      return;
+    }
+
+    if (!selectedEvent || !hasSelectedTicket(this.selectedTickets())) {
+      this.submitError.set('Select tickets before confirming this booking.');
+      return;
+    }
+
+    if (this.attendeeForm.invalid) {
+      this.attendeeForm.markAllAsTouched();
+      this.submitError.set('Complete all attendee details before confirming.');
+      return;
+    }
+
+    this.isSubmitting.set(true);
+    this.submitError.set('');
+    this.notificationMessage.set('');
+
+    const payload = buildBookingCreatePayload(
+      selectedEvent,
+      this.selectedTickets(),
+      this.attendees.controls.map((control) => control.getRawValue()),
+      generateBookingReference(),
+      bookingDateValue()
+    );
+
+    this.bookingsService.createBooking(payload).subscribe({
+      next: (booking) => {
+        this.createdBooking.set(booking);
+        this.notificationType.set('success');
+        this.notificationMessage.set('Booking successfully created.');
+        this.isSubmitting.set(false);
+      },
+      error: () => {
+        this.submitError.set('Booking could not be created. Please try again.');
+        this.notificationType.set('error');
+        this.notificationMessage.set('Booking creation failed.');
+        this.isSubmitting.set(false);
+      }
+    });
   }
 
   protected attendeeLabel(index: number): string {

@@ -1,8 +1,10 @@
 import { Event } from '../../models';
 import {
   buildAttendeeSlots,
+  buildBookingCreatePayload,
   buildBookingTickets,
   clampQuantity,
+  generateBookingReference,
   hasSelectedTicket,
   totalAmount,
   totalTickets
@@ -68,5 +70,36 @@ describe('booking helpers', () => {
       { ticketType: 'General', index: 1 },
       { ticketType: 'VIP', index: 0 }
     ]);
+  });
+
+  it('generates a readable booking reference number', () => {
+    const reference = generateBookingReference(new Date(2026, 6, 17));
+
+    expect(reference).toMatch(/^BK-2026-[A-Z0-9]{7}$/);
+  });
+
+  it('builds a booking payload with matching totals and attendees', () => {
+    const tickets = [
+      { type: 'General', quantity: 2, price: 99 },
+      { type: 'VIP', quantity: 1, price: 199 }
+    ];
+    const attendees = [
+      { name: 'Jordan Lee', email: 'jordan@example.com', phone: '4165550101' },
+      { name: 'Avery Kim', email: 'avery@example.com', phone: '4165550102' },
+      { name: 'Morgan Chan', email: 'morgan@example.com', phone: '4165550103' }
+    ];
+
+    const payload = buildBookingCreatePayload(
+      event,
+      tickets,
+      attendees,
+      'BK-2026-ABC123',
+      '2026-07-17'
+    );
+
+    expect(payload.tickets).toEqual(tickets);
+    expect(payload.attendees.length).toBe(3);
+    expect(payload.totalAmount).toBe(397);
+    expect(payload.referenceNumber).toBe('BK-2026-ABC123');
   });
 });
