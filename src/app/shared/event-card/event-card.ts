@@ -1,8 +1,9 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { Event } from '../../models';
+import { getLowestTicketPrice } from '../event-discovery';
 
 @Component({
   selector: 'app-event-card',
@@ -12,13 +13,12 @@ import { Event } from '../../models';
 })
 export class EventCard {
   @Input({ required: true }) event!: Event;
+  @Input() isFavorite = false;
+
+  @Output() favoriteToggled = new EventEmitter<string>();
 
   get lowestTicketPrice(): number | null {
-    if (this.event.ticketTypes.length === 0) {
-      return null;
-    }
-
-    return Math.min(...this.event.ticketTypes.map((ticket) => ticket.price));
+    return getLowestTicketPrice(this.event);
   }
 
   get priceLabel(): string {
@@ -33,5 +33,15 @@ export class EventCard {
     }
 
     return 'From';
+  }
+
+  get favoriteLabel(): string {
+    const action = this.isFavorite ? 'Remove' : 'Add';
+
+    return `${action} ${this.event.title} ${this.isFavorite ? 'from' : 'to'} favorites`;
+  }
+
+  toggleFavorite(): void {
+    this.favoriteToggled.emit(this.event.id);
   }
 }

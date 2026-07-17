@@ -14,15 +14,116 @@
       <p>{{ errorMessage() }}</p>
       <button type="button" (click)="loadEvents()">Retry</button>
     </div>
-  } @else if (events().length === 0) {
+  } @else if (allEvents().length === 0) {
     <div class="state-panel">
       <p>No events found.</p>
     </div>
   } @else {
+    <form
+      class="events-controls"
+      aria-label="Event discovery controls"
+      (submit)="$event.preventDefault()"
+    >
+      <div class="control-field search-field">
+        <label for="event-search">Search by title</label>
+        <input
+          id="event-search"
+          name="event-search"
+          type="search"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
+          placeholder="Search events"
+        />
+      </div>
+
+      <div class="control-field">
+        <label for="category-filter">Category</label>
+        <select
+          id="category-filter"
+          name="category-filter"
+          [ngModel]="categoryFilter()"
+          (ngModelChange)="categoryFilter.set($event)"
+        >
+          <option value="all">All Categories</option>
+          @for (category of uniqueCategories(); track category) {
+            <option [value]="category">{{ category }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="control-field">
+        <label for="date-filter">Date</label>
+        <select
+          id="date-filter"
+          name="date-filter"
+          [ngModel]="dateFilter()"
+          (ngModelChange)="dateFilter.set($event)"
+        >
+          <option value="all">All Dates</option>
+          <option value="upcoming">Upcoming</option>
+          <option value="this-week">This Week</option>
+          <option value="this-month">This Month</option>
+        </select>
+      </div>
+
+      <div class="control-field">
+        <label for="price-filter">Price</label>
+        <select
+          id="price-filter"
+          name="price-filter"
+          [ngModel]="priceFilter()"
+          (ngModelChange)="priceFilter.set($event)"
+        >
+          <option value="all">All Prices</option>
+          <option value="free">Free</option>
+          <option value="under-50">Under $50</option>
+          <option value="50-plus">$50+</option>
+        </select>
+      </div>
+
+      <div class="control-field">
+        <label for="sort-option">Sort by</label>
+        <select
+          id="sort-option"
+          name="sort-option"
+          [ngModel]="sortOption()"
+          (ngModelChange)="sortOption.set($event)"
+        >
+          <option value="date-soonest">Date: Soonest First</option>
+          <option value="date-latest">Date: Latest First</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+        </select>
+      </div>
+
+      <button
+        class="reset-button"
+        type="button"
+        (click)="resetFilters()"
+        [disabled]="!hasActiveControls()"
+      >
+        Reset Filters
+      </button>
+    </form>
+
+    <p class="result-count" aria-live="polite">{{ resultCountLabel() }}</p>
+
+    @if (filteredEvents().length === 0) {
+      <div class="state-panel">
+        <p>No events found.</p>
+        <p>Try changing your search or filters to see more events.</p>
+        <button type="button" (click)="resetFilters()">Reset Filters</button>
+      </div>
+    } @else {
     <div class="events-grid" aria-label="Available events">
-      @for (event of events(); track event.id) {
-        <app-event-card [event]="event" />
+      @for (event of filteredEvents(); track event.id) {
+        <app-event-card
+          [event]="event"
+          [isFavorite]="favoriteIds().has(event.id)"
+          (favoriteToggled)="toggleFavorite($event)"
+        />
       }
     </div>
+    }
   }
 </section>

@@ -13,11 +13,17 @@
       <h2>{{ event.title }}</h2>
       <button
         class="favorite-button"
+        [class.favorite-button-active]="isFavorite"
         type="button"
-        [attr.aria-label]="'Like ' + event.title + ' (coming soon)'"
-        title="Favorite feature coming soon"
+        [attr.aria-label]="favoriteLabel"
+        [attr.aria-pressed]="isFavorite"
+        (click)="toggleFavorite()"
       >
-        <span aria-hidden="true">&#9825;</span>
+        @if (isFavorite) {
+          <span aria-hidden="true">&hearts;</span>
+        } @else {
+          <span aria-hidden="true">&#9825;</span>
+        }
       </button>
     </div>
 

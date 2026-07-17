@@ -70,6 +70,12 @@
   padding: 0;
 }
 
+.favorite-button-active {
+  background: #ffe7e3;
+  border-color: #b42318;
+  color: #9f1d15;
+}
+
 .event-meta {
   display: grid;
   gap: 0.6rem;
