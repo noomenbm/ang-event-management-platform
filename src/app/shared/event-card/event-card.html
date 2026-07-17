@@ -1,0 +1,46 @@
+<article class="event-card">
+  <div class="event-image-wrap">
+    <img
+      class="event-image"
+      [src]="event.image"
+      [alt]="event.title + ' event image'"
+    />
+    <span class="event-category">{{ event.category }}</span>
+  </div>
+
+  <div class="event-content">
+    <div class="event-header">
+      <h2>{{ event.title }}</h2>
+      <button
+        class="favorite-button"
+        type="button"
+        [attr.aria-label]="'Like ' + event.title + ' (coming soon)'"
+        title="Favorite feature coming soon"
+      >
+        <span aria-hidden="true">&#9825;</span>
+      </button>
+    </div>
+
+    <dl class="event-meta">
+      <div>
+        <dt>Date</dt>
+        <dd>{{ event.date | date: 'mediumDate' }}</dd>
+      </div>
+      <div>
+        <dt>Location</dt>
+        <dd>{{ event.location }}</dd>
+      </div>
+    </dl>
+
+    <div class="event-footer">
+      <p class="event-price">
+        @if (lowestTicketPrice === 0 || lowestTicketPrice === null) {
+          {{ priceLabel }}
+        } @else {
+          {{ priceLabel }} {{ lowestTicketPrice | currency: 'CAD' : 'symbol' : '1.2-2' }}
+        }
+      </p>
+      <a class="details-link" [routerLink]="['/events', event.id]">View details</a>
+    </div>
+  </div>
+</article>

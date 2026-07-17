@@ -1,0 +1,55 @@
+.events-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.events-intro {
+  max-width: 44rem;
+}
+
+.events-intro p {
+  color: #5d6775;
+  font-size: 1.05rem;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+
+.state-panel {
+  min-height: 12rem;
+  display: grid;
+  place-items: center;
+  gap: 1rem;
+  border: 1px solid #d7dde5;
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 2rem;
+  text-align: center;
+}
+
+.state-panel p {
+  margin: 0;
+}
+
+.error-panel {
+  border-color: #f2a7a0;
+  background: #fff8f7;
+}
+
+.loading-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 0.25rem solid #d7dde5;
+  border-top-color: #0f4c81;
+  border-radius: 999px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

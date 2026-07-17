@@ -1,4 +1,28 @@
-<section class="page-section" aria-labelledby="events-title">
-  <h1 id="events-title">Events</h1>
-  <p>Browse and discover available events. Event cards, search, filters, and sorting will be added later.</p>
+<section class="events-page" aria-labelledby="events-title">
+  <header class="events-intro">
+    <h1 id="events-title">Events</h1>
+    <p>Browse upcoming events and choose one to view more details.</p>
+  </header>
+
+  @if (isLoading()) {
+    <div class="state-panel" role="status" aria-live="polite">
+      <span class="loading-spinner" aria-hidden="true"></span>
+      <p>Loading events...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="state-panel error-panel" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <button type="button" (click)="loadEvents()">Retry</button>
+    </div>
+  } @else if (events().length === 0) {
+    <div class="state-panel">
+      <p>No events found.</p>
+    </div>
+  } @else {
+    <div class="events-grid" aria-label="Available events">
+      @for (event of events(); track event.id) {
+        <app-event-card [event]="event" />
+      }
+    </div>
+  }
 </section>
