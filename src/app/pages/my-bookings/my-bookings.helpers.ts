@@ -1,13 +1,14 @@
 import { Booking } from '../../models';
+import { isEventPast, isEventUpcoming } from '../../shared/date-utils';
 
 export type BookingFilter = 'all' | 'upcoming' | 'past';
 
 export function isUpcomingBooking(booking: Booking, today = new Date()): boolean {
-  return parseDateOnly(booking.eventDate).getTime() >= startOfDay(today).getTime();
+  return isEventUpcoming(booking.eventDate, today);
 }
 
 export function isPastBooking(booking: Booking, today = new Date()): boolean {
-  return parseDateOnly(booking.eventDate).getTime() < startOfDay(today).getTime();
+  return isEventPast(booking.eventDate, today);
 }
 
 export function canCancelBooking(booking: Booking, today = new Date()): boolean {
@@ -34,14 +35,4 @@ export function replaceBooking(bookings: Booking[], updatedBooking: Booking): Bo
   return bookings.map((booking) =>
     booking.id === updatedBooking.id ? updatedBooking : booking
   );
-}
-
-function parseDateOnly(date: string): Date {
-  const [year, month, day] = date.split('-').map(Number);
-
-  return new Date(year, month - 1, day);
-}
-
-function startOfDay(date: Date): Date {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }

@@ -28,7 +28,19 @@
       <p>{{ selectedEvent.date | date: 'fullDate' }}</p>
     </header>
 
-    @if (createdBooking(); as booking) {
+    @if (eventHasEnded()) {
+      <section class="booking-panel ended-panel" aria-labelledby="booking-ended-title">
+        <h2 id="booking-ended-title">This event can no longer be booked</h2>
+        <p>Bookings are closed because this event has already ended.</p>
+
+        <div class="button-row">
+          <a class="secondary-link" [routerLink]="['/events', selectedEvent.id]">
+            View Event Details
+          </a>
+          <a class="primary-link" routerLink="/events">Back to Events</a>
+        </div>
+      </section>
+    } @else if (createdBooking(); as booking) {
       <section class="booking-panel success-panel" aria-labelledby="booking-success-title">
         <p class="eyebrow">Confirmed</p>
         <h2 id="booking-success-title">Booking confirmed</h2>

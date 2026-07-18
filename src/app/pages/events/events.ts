@@ -12,6 +12,7 @@ import {
   PriceFilter,
   SortOption
 } from '../../shared/event-discovery';
+import { isEventUpcoming } from '../../shared/date-utils';
 import { EventCard } from '../../shared/event-card/event-card';
 
 @Component({
@@ -32,6 +33,9 @@ export class Events implements OnInit {
     DEFAULT_EVENT_DISCOVERY_CONTROLS.date
   );
   protected readonly errorMessage = signal('');
+  protected readonly availableEvents = computed(() =>
+    this.allEvents().filter((event) => isEventUpcoming(event.date))
+  );
   protected readonly favoriteIds = signal<ReadonlySet<string>>(new Set<string>());
   protected readonly filteredEvents = computed(() =>
     discoverEvents(this.allEvents(), {
@@ -64,7 +68,7 @@ export class Events implements OnInit {
     DEFAULT_EVENT_DISCOVERY_CONTROLS.sort
   );
   protected readonly uniqueCategories = computed(() =>
-    [...new Set(this.allEvents().map((event) => event.category))].sort()
+    [...new Set(this.availableEvents().map((event) => event.category))].sort()
   );
 
   ngOnInit(): void {

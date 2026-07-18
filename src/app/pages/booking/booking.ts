@@ -15,6 +15,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Attendee, Booking as CreatedBooking, BookingTicket, Event } from '../../models';
 import { BookingsService } from '../../services/bookings.service';
 import { EventsService } from '../../services/events.service';
+import { isEventPast } from '../../shared/date-utils';
 import {
   AttendeeSlot,
   buildAttendeeSlots,
@@ -56,6 +57,11 @@ export class Booking implements OnInit {
   protected readonly currentStep = signal<BookingStep>(1);
   protected readonly errorMessage = signal('');
   protected readonly event = signal<Event | null>(null);
+  protected readonly eventHasEnded = computed(() => {
+    const selectedEvent = this.event();
+
+    return selectedEvent ? isEventPast(selectedEvent.date) : false;
+  });
   protected readonly isLoading = signal(false);
   protected readonly isSubmitting = signal(false);
   protected readonly notificationMessage = signal('');
@@ -116,6 +122,10 @@ export class Booking implements OnInit {
   }
 
   protected updateQuantity(ticketId: string, value: string, available: number): void {
+    if (this.eventHasEnded()) {
+      return;
+    }
+
     const parsedValue = Number(value);
     const nextQuantities = new Map(this.quantities());
     nextQuantities.set(ticketId, clampQuantity(parsedValue, available));
@@ -131,6 +141,11 @@ export class Booking implements OnInit {
   }
 
   protected continueToAttendees(): void {
+    if (this.eventHasEnded()) {
+      this.quantityError.set('This event has ended and can no longer be booked.');
+      return;
+    }
+
     if (!hasSelectedTicket(this.selectedTickets())) {
       this.quantityError.set('Select at least one ticket to continue.');
       return;
@@ -143,6 +158,11 @@ export class Booking implements OnInit {
   }
 
   protected continueToSummary(): void {
+    if (this.eventHasEnded()) {
+      this.submitError.set('This event has ended and can no longer be booked.');
+      return;
+    }
+
     if (this.attendeeForm.invalid) {
       this.attendeeForm.markAllAsTouched();
       return;
@@ -164,7 +184,12 @@ export class Booking implements OnInit {
       return;
     }
 
-    if (!selectedEvent || !hasSelectedTicket(this.selectedTickets())) {
+    if (!selectedEvent || this.eventHasEnded()) {
+      this.submitError.set('This event has ended and can no longer be booked.');
+      return;
+    }
+
+    if (!hasSelectedTicket(this.selectedTickets())) {
       this.submitError.set('Select tickets before confirming this booking.');
       return;
     }

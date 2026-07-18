@@ -19,11 +19,12 @@ interface BookingTestApi {
 }
 
 describe('Booking', () => {
-  const event = createEvent();
+  let event: Event;
   let createBookingCalls: number;
   let createBookingSubject: Subject<CreatedBooking>;
 
   beforeEach(async () => {
+    event = createEvent('2026-12-14');
     createBookingCalls = 0;
     createBookingSubject = new Subject<CreatedBooking>();
 
@@ -103,15 +104,32 @@ describe('Booking', () => {
 
     expect(createBookingCalls).toBe(1);
   });
+
+  it('blocks a past event and does not submit a booking', () => {
+    event = createEvent('2026-07-14');
+    const fixture = TestBed.createComponent(Booking);
+    fixture.detectChanges();
+    const component = fixture.componentInstance as unknown as BookingTestApi;
+
+    component.updateQuantity('general', '1', 100);
+    component.continueToAttendees();
+    component.confirmBooking();
+
+    expect(fixture.nativeElement.textContent).toContain(
+      'This event can no longer be booked'
+    );
+    expect(component.currentStep()).toBe(1);
+    expect(createBookingCalls).toBe(0);
+  });
 });
 
-function createEvent(): Event {
+function createEvent(date: string): Event {
   return {
     id: '1',
     title: 'Angular Summit',
     description: '',
     category: 'Technology',
-    date: '2026-07-14',
+    date,
     time: '09:00 AM',
     location: 'Toronto, ON',
     venue: 'Test Venue',

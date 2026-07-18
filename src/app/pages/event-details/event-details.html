@@ -46,9 +46,16 @@
           </div>
         </dl>
 
-        <a class="book-link" [routerLink]="['/book', selectedEvent.id]">
-          Book Tickets
-        </a>
+        @if (eventHasEnded()) {
+          <div class="ended-panel" role="status">
+            <strong>Event has ended.</strong>
+            <p>Tickets are no longer available for this event.</p>
+          </div>
+        } @else {
+          <a class="book-link" [routerLink]="['/book', selectedEvent.id]">
+            Book Tickets
+          </a>
+        }
       </div>
     </article>
 

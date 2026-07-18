@@ -170,6 +170,8 @@ Suggested Vercel settings:
 
 The included `vercel.json` rewrites all frontend routes to `index.html` so direct refreshes such as `/events/1`, `/book/1`, and `/bookings` work as client-side routes.
 
+After changing `vercel.json`, push the correction to trigger a new Vercel deployment. When the deployment finishes, directly open or refresh `/events/1`, `/book/1`, and `/bookings` to confirm Vercel serves the Angular app instead of a `404 NOT_FOUND` page.
+
 ## Backend Deployment on Render
 
 JSON Server must be hosted separately from the Vercel frontend.
@@ -181,6 +183,12 @@ Suggested Render settings:
 - Environment: Node
 
 The production server script binds to `0.0.0.0` and uses the host-provided `PORT`.
+
+Current production backend:
+
+```text
+https://ang-event-management-platform.onrender.com
+```
 
 ## Production API URL
 
@@ -196,10 +204,10 @@ Production builds use:
 src/environments/environment.production.ts
 ```
 
-Replace this placeholder with the deployed JSON Server URL before deploying the frontend:
+Production is currently configured to use:
 
 ```text
-https://YOUR-JSON-SERVER-URL.example.com
+https://ang-event-management-platform.onrender.com
 ```
 
 The app reads the API URL through `src/app/config/api.config.ts`, so API URLs are not scattered through the codebase.

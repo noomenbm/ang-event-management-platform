@@ -1,9 +1,10 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { Event } from '../../models';
 import { EventsService } from '../../services/events.service';
+import { isEventPast } from '../../shared/date-utils';
 
 @Component({
   selector: 'app-event-details',
@@ -17,6 +18,11 @@ export class EventDetails implements OnInit {
 
   protected readonly errorMessage = signal('');
   protected readonly event = signal<Event | null>(null);
+  protected readonly eventHasEnded = computed(() => {
+    const selectedEvent = this.event();
+
+    return selectedEvent ? isEventPast(selectedEvent.date) : false;
+  });
   protected readonly isLoading = signal(false);
 
   ngOnInit(): void {

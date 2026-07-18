@@ -1,4 +1,5 @@
 import { Event } from '../models';
+import { isEventUpcoming, parseDateOnly, startOfDay } from './date-utils';
 
 export type CategoryFilter = 'all' | string;
 export type DateFilter = 'all' | 'upcoming' | 'this-week' | 'this-month';
@@ -41,6 +42,7 @@ export function discoverEvents(
   const searchTerm = controls.searchTerm.trim().toLowerCase();
 
   const filteredEvents = events
+    .filter((event) => isEventUpcoming(event.date, today))
     .filter((event) => event.title.toLowerCase().includes(searchTerm))
     .filter((event) => categoryMatches(event, controls.category))
     .filter((event) => dateMatches(event, controls.date, today))
@@ -124,16 +126,6 @@ function compareEvents(first: Event, second: Event, sort: SortOption): number {
 
 function priceValue(event: Event): number {
   return getLowestTicketPrice(event) ?? Number.MAX_SAFE_INTEGER;
-}
-
-function parseDateOnly(date: string): Date {
-  const [year, month, day] = date.split('-').map(Number);
-
-  return new Date(year, month - 1, day);
-}
-
-function startOfDay(date: Date): Date {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
 function startOfWeek(date: Date): Date {

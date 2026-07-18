@@ -6,7 +6,7 @@ import {
 } from './event-discovery';
 
 const events: Event[] = [
-  createEvent('1', 'Angular Summit', 'Technology', '2026-07-14', [
+  createEvent('1', 'Angular Summit', 'Technology', '2026-07-18', [
     99,
     45
   ]),
@@ -33,6 +33,12 @@ describe('event discovery', () => {
 
     expect(result.map((event) => event.id)).toEqual(['1']);
     expect(events.map((event) => event.id)).toEqual(['1', '2', '3', '4', '5']);
+  });
+
+  it('excludes past events from default results', () => {
+    const result = discoverEvents(events, DEFAULT_EVENT_DISCOVERY_CONTROLS, today);
+
+    expect(result.map((event) => event.id)).toEqual(['2', '1', '3', '4']);
   });
 
   it('filters by category', () => {
@@ -74,9 +80,9 @@ describe('event discovery', () => {
       today
     );
 
-    expect(upcoming.map((event) => event.id)).toEqual(['2', '3', '4']);
-    expect(thisWeek.map((event) => event.id)).toEqual(['1', '2']);
-    expect(thisMonth.map((event) => event.id)).toEqual(['1', '2', '3', '4']);
+    expect(upcoming.map((event) => event.id)).toEqual(['2', '1', '3', '4']);
+    expect(thisWeek.map((event) => event.id)).toEqual(['2', '1']);
+    expect(thisMonth.map((event) => event.id)).toEqual(['2', '1', '3', '4']);
   });
 
   it('filters by lowest ticket price', () => {
@@ -106,7 +112,7 @@ describe('event discovery', () => {
     );
 
     expect(free.map((event) => event.id)).toEqual(['3']);
-    expect(under50.map((event) => event.id)).toEqual(['5', '1', '2']);
+    expect(under50.map((event) => event.id)).toEqual(['2', '1']);
     expect(fiftyPlus.map((event) => event.id)).toEqual(['4']);
   });
 
@@ -136,9 +142,9 @@ describe('event discovery', () => {
       today
     );
 
-    expect(latest.map((event) => event.id)).toEqual(['4', '3', '2', '1', '5']);
-    expect(priceLow.map((event) => event.id)).toEqual(['3', '2', '5', '1', '4']);
-    expect(priceHigh.map((event) => event.id)).toEqual(['4', '1', '2', '5', '3']);
+    expect(latest.map((event) => event.id)).toEqual(['4', '3', '1', '2']);
+    expect(priceLow.map((event) => event.id)).toEqual(['3', '2', '1', '4']);
+    expect(priceHigh.map((event) => event.id)).toEqual(['4', '1', '2', '3']);
   });
 
   it('calculates the lowest ticket price', () => {

@@ -196,6 +196,11 @@
   background: var(--color-success-surface);
 }
 
+.ended-panel {
+  border-color: var(--color-warning);
+  background: var(--color-surface-soft);
+}
+
 .confirmation-details {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
