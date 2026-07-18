@@ -83,12 +83,13 @@
                 <label>
                   Quantity
                   <input
+                    #quantityInput
                     type="number"
                     min="0"
                     [max]="ticket.available < 10 ? ticket.available : 10"
                     step="1"
                     [value]="ticketQuantity(ticket.id)"
-                    (input)="updateQuantity(ticket.id, $any($event.target).value, ticket.available)"
+                    (input)="updateQuantity(ticket.id, quantityInput.value, ticket.available)"
                   />
                 </label>
               </article>

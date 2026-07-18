@@ -13,8 +13,20 @@
         Events
       </a>
       <a routerLink="/bookings" routerLinkActive="active">My Bookings</a>
-      <button type="button" aria-label="Theme toggle placeholder">
-        Toggle theme
+      <button
+        class="theme-toggle"
+        type="button"
+        [attr.aria-label]="themeToggleLabel()"
+        [attr.aria-pressed]="currentTheme() === 'dark'"
+        (click)="toggleTheme()"
+      >
+        <span aria-hidden="true">
+          @if (currentTheme() === 'light') {
+            Dark
+          } @else {
+            Light
+          }
+        </span>
       </button>
     </div>
   </nav>

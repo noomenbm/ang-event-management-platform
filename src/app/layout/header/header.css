@@ -1,6 +1,6 @@
 .site-header {
-  border-bottom: 1px solid #d7dde5;
-  background: #ffffff;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-header);
 }
 
 .skip-link {
@@ -8,8 +8,8 @@
   left: 1rem;
   top: 0.5rem;
   transform: translateY(-150%);
-  background: #0f172a;
-  color: #ffffff;
+  background: var(--color-heading);
+  color: var(--color-surface);
   padding: 0.5rem 0.75rem;
   z-index: 1;
 }
@@ -29,7 +29,7 @@
 }
 
 .app-title {
-  color: #111827;
+  color: var(--color-heading);
   font-size: 1.15rem;
   font-weight: 700;
   text-decoration: none;
@@ -43,16 +43,28 @@
 }
 
 .nav-actions a {
-  color: #384252;
+  color: var(--color-label);
   padding: 0.5rem 0.65rem;
   text-decoration: none;
 }
 
 .nav-actions a.active {
-  color: #0f4c81;
+  color: var(--color-primary);
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 0.35rem;
+}
+
+.theme-toggle {
+  min-width: 4.8rem;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.theme-toggle[aria-pressed='true'] {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
 }
 
 @media (max-width: 640px) {
@@ -60,5 +72,9 @@
     align-items: flex-start;
     flex-direction: column;
     padding: 1rem 0;
+  }
+
+  .nav-actions {
+    width: 100%;
   }
 }

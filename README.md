@@ -1,89 +1,236 @@
-# AngEventManagementPlatform
+# Event Management Platform
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.19.
+Angular course project for browsing events, viewing event details, creating bookings, reviewing bookings, cancelling eligible bookings, and switching between light and dark themes.
 
-## Current Project Status
+## Project Overview
 
-This course project is being built incrementally. The application currently has the shell, routing, placeholder pages, domain models, API base configuration, and json-server sample data. Event listing, search, filters, booking forms, cancellation, and theme behavior are not implemented yet.
+The application is a standalone Angular event management platform backed by JSON Server sample data. It demonstrates client-side routing, API services, reusable components, reactive forms, local UI state, loading and error states, and deployment preparation for a separate frontend and backend.
 
-## Development server
+## Main Features
 
-To start a local development server, run:
+- Events listing loaded from the API
+- Search by event title
+- Category, date, and price filters
+- Date and price sorting
+- Session-only favorite buttons
+- Event Details page with organizer and ticket information
+- Three-step booking flow
+- Ticket quantity selection with real-time totals
+- Reactive attendee forms with validation
+- Booking confirmation with reference number
+- My Bookings page loaded from the API
+- Upcoming and Past booking filters
+- Cancellation confirmation dialog
+- Booking cancellation through `PATCH /bookings/:id`
+- Light and dark theme toggle with saved preference
+- Loading, error, empty, and success states
+- Responsive layouts for desktop, tablet, and mobile
+
+## Technology Stack
+
+- Angular 21
+- Angular standalone components
+- Angular Router
+- Angular Reactive Forms
+- Angular HttpClient
+- Signals
+- JSON Server
+- Vitest through Angular test tooling
+- CSS custom properties
+
+## Architecture Overview
+
+- `src/app/pages` contains route-level pages.
+- `src/app/shared` contains reusable UI pieces such as event cards.
+- `src/app/services` contains focused API and application services.
+- `src/app/models` contains TypeScript domain models.
+- `src/app/config` centralizes API configuration.
+- `src/environments` contains local and production API URL settings.
+- `backend/db.json` contains JSON Server sample data.
+
+The frontend and JSON Server backend are prepared as separate deployable pieces. Local development uses `http://localhost:3000` for the API.
+
+## Prerequisites
+
+- Node.js compatible with the installed Angular version
+- npm
+- Git
+
+## Installation
+
+```bash
+npm install
+```
+
+## Running Locally
+
+Start the Angular frontend:
 
 ```bash
 npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Local API Server
-
-To start json-server with the sample event and booking data, run:
+Start JSON Server:
 
 ```bash
 npm run server
 ```
 
-The API runs at `http://localhost:3000`.
-
-Useful endpoints include:
-
-```text
-GET http://localhost:3000/events
-GET http://localhost:3000/events/1
-GET http://localhost:3000/bookings?userId=user1
-```
-
-## Run Frontend and API Together
-
-To start Angular and json-server at the same time, run:
+Start both together:
 
 ```bash
 npm run dev
 ```
 
-## Code scaffolding
+## Available npm Scripts
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```text
+npm start       Angular development server
+npm run server  Local JSON Server on port 3000
+npm run dev     Angular and JSON Server together
+npm run build   Production Angular build
+npm test        Unit tests
+npm run server:prod  JSON Server for hosted backend environments
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Local URLs
 
-```bash
-ng generate --help
+- Frontend: `http://localhost:4200`
+- JSON Server API: `http://localhost:3000`
+
+## JSON Server Endpoints
+
+```text
+GET    /events
+GET    /events/:id
+GET    /bookings?userId=user1
+POST   /bookings
+PATCH  /bookings/:id
 ```
 
-## Building
+Sample user ID:
 
-To build the project run:
-
-```bash
-ng build
+```text
+user1
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Project Structure
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+```text
+backend/
+  db.json
+src/
+  app/
+    config/
+    layout/
+    models/
+    pages/
+    services/
+    shared/
+  environments/
 ```
 
-## Running end-to-end tests
+## Testing
 
-For end-to-end (e2e) testing, run:
+Run the test suite:
 
 ```bash
-ng e2e
+npm test -- --watch=false
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Tests cover API services, event discovery helpers, booking calculations, attendee form behavior, booking submission safeguards, My Bookings filtering and cancellation rules, theme behavior, and API configuration.
 
-## Additional Resources
+## Production Build
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Run:
+
+```bash
+npm run build
+```
+
+Angular writes build output under:
+
+```text
+dist/ang-event-management-platform
+```
+
+For static frontend hosting, use the browser output:
+
+```text
+dist/ang-event-management-platform/browser
+```
+
+## Frontend Deployment on Vercel
+
+Suggested Vercel settings:
+
+- Build command: `npm run build`
+- Output directory: `dist/ang-event-management-platform/browser`
+- Install command: `npm install`
+
+The included `vercel.json` rewrites all frontend routes to `index.html` so direct refreshes such as `/events/1`, `/book/1`, and `/bookings` work as client-side routes.
+
+## Backend Deployment on Render
+
+JSON Server must be hosted separately from the Vercel frontend.
+
+Suggested Render settings:
+
+- Build command: `npm install`
+- Start command: `npm run server:prod`
+- Environment: Node
+
+The production server script binds to `0.0.0.0` and uses the host-provided `PORT`.
+
+## Production API URL
+
+Local development uses:
+
+```text
+src/environments/environment.ts
+```
+
+Production builds use:
+
+```text
+src/environments/environment.production.ts
+```
+
+Replace this placeholder with the deployed JSON Server URL before deploying the frontend:
+
+```text
+https://YOUR-JSON-SERVER-URL.example.com
+```
+
+The app reads the API URL through `src/app/config/api.config.ts`, so API URLs are not scattered through the codebase.
+
+## Screenshots
+
+Screenshots are not included yet. Suggested captures:
+
+- Events listing in light mode
+- Events listing in dark mode
+- Event Details page
+- Booking confirmation
+- My Bookings cancellation dialog
+
+## Live Demo
+
+Live demo: not deployed yet.
+
+## Repository
+
+GitHub repository:
+
+```text
+https://github.com/noomenbm/ang-event-management-platform
+```
+
+## Known Limitations
+
+- No authentication
+- Fixed demo user: `user1`
+- JSON Server is a demonstration backend
+- Ticket availability is not reduced after booking
+- Favorites last only for the current browser session
+- No payment processing

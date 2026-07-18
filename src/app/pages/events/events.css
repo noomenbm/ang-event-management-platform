@@ -8,7 +8,7 @@
 }
 
 .events-intro p {
-  color: #5d6775;
+  color: var(--color-muted);
   font-size: 1.05rem;
 }
 
@@ -17,9 +17,9 @@
   grid-template-columns: minmax(14rem, 1.5fr) repeat(4, minmax(9rem, 1fr)) auto;
   align-items: end;
   gap: 1rem;
-  border: 1px solid #d7dde5;
+  border: 1px solid var(--color-border);
   border-radius: 0.5rem;
-  background: #ffffff;
+  background: var(--color-surface);
   padding: 1rem;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .control-field label {
-  color: #384252;
+  color: var(--color-label);
   font-size: 0.85rem;
   font-weight: 700;
 }
@@ -38,36 +38,36 @@
 .control-field select {
   width: 100%;
   min-height: 2.65rem;
-  border: 1px solid #9aa7b7;
+  border: 1px solid var(--color-border-strong);
   border-radius: 0.4rem;
-  background: #ffffff;
-  color: #1f2937;
+  background: var(--color-input);
+  color: var(--color-text);
   font: inherit;
   padding: 0.55rem 0.65rem;
 }
 
 .control-field input:focus,
 .control-field select:focus {
-  outline: 3px solid #f59e0b;
+  outline: 3px solid var(--color-focus);
   outline-offset: 2px;
 }
 
 .reset-button {
   min-height: 2.65rem;
-  border-color: #0f4c81;
-  color: #0f4c81;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
   font-weight: 700;
 }
 
 .reset-button:disabled {
-  border-color: #c8d0da;
-  color: #7b8796;
+  border-color: var(--color-border);
+  color: var(--color-muted);
   cursor: not-allowed;
 }
 
 .result-count {
   margin: -0.5rem 0 0;
-  color: #5d6775;
+  color: var(--color-muted);
   font-weight: 700;
 }
 
@@ -82,9 +82,9 @@
   display: grid;
   place-items: center;
   gap: 1rem;
-  border: 1px solid #d7dde5;
+  border: 1px solid var(--color-border);
   border-radius: 0.5rem;
-  background: #ffffff;
+  background: var(--color-surface);
   padding: 2rem;
   text-align: center;
 }
@@ -94,15 +94,15 @@
 }
 
 .error-panel {
-  border-color: #f2a7a0;
-  background: #fff8f7;
+  border-color: var(--color-error-border);
+  background: var(--color-error-surface);
 }
 
 .loading-spinner {
   width: 2rem;
   height: 2rem;
-  border: 0.25rem solid #d7dde5;
-  border-top-color: #0f4c81;
+  border: 0.25rem solid var(--color-border);
+  border-top-color: var(--color-primary);
   border-radius: 999px;
   animation: spin 0.8s linear infinite;
 }

@@ -10,9 +10,9 @@
 .booking-header,
 .booking-panel,
 .state-panel {
-  border: 1px solid #d7dde5;
+  border: 1px solid var(--color-border);
   border-radius: 0.5rem;
-  background: #ffffff;
+  background: var(--color-surface);
   padding: 1.5rem;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .eyebrow {
-  color: #0f4c81;
+  color: var(--color-primary);
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -36,38 +36,23 @@
 }
 
 .progress-list li {
-  border: 1px solid #d7dde5;
+  border: 1px solid var(--color-border);
   border-radius: 0.5rem;
-  background: #ffffff;
+  background: var(--color-surface);
   padding: 0.75rem;
   text-align: center;
 }
 
 .progress-list .active-step {
-  border-color: #0f4c81;
-  background: #eaf4ff;
-  color: #0f4c81;
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   font-weight: 700;
 }
 
 .booking-panel {
   display: grid;
   gap: 1.25rem;
-}
-
-.notification {
-  border: 1px solid #9bd4ac;
-  border-radius: 0.5rem;
-  background: #f0fff4;
-  color: #166534;
-  padding: 0.85rem 1rem;
-  font-weight: 700;
-}
-
-.error-notification {
-  border-color: #f2a7a0;
-  background: #fff8f7;
-  color: #b42318;
 }
 
 .ticket-list,
@@ -81,7 +66,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border: 1px solid #d7dde5;
+  border: 1px solid var(--color-border);
   border-radius: 0.5rem;
   padding: 1rem;
 }
@@ -95,15 +80,17 @@
 .form-grid label {
   display: grid;
   gap: 0.4rem;
-  color: #384252;
+  color: var(--color-label);
   font-weight: 700;
 }
 
 .ticket-row input,
 .form-grid input {
   min-height: 2.6rem;
-  border: 1px solid #9aa7b7;
+  border: 1px solid var(--color-border-strong);
   border-radius: 0.4rem;
+  background: var(--color-input);
+  color: var(--color-text);
   font: inherit;
   padding: 0.55rem 0.65rem;
 }
@@ -113,9 +100,9 @@
 }
 
 .summary-panel {
-  border: 1px solid #d7dde5;
+  border: 1px solid var(--color-border);
   border-radius: 0.5rem;
-  background: #f7f9fc;
+  background: var(--color-surface-soft);
   padding: 1rem;
 }
 
@@ -134,7 +121,7 @@
 }
 
 .total-amount {
-  color: #0f4c81;
+  color: var(--color-primary);
   font-weight: 700;
 }
 
@@ -146,29 +133,29 @@
 }
 
 .primary-button {
-  border-color: #0f4c81;
-  background: #0f4c81;
-  color: #ffffff;
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
   font-weight: 700;
 }
 
 .primary-button:disabled {
-  border-color: #c8d0da;
-  background: #e6ebf1;
-  color: #7b8796;
+  border-color: var(--color-border);
+  background: var(--color-surface-soft);
+  color: var(--color-muted);
   cursor: not-allowed;
 }
 
 .attendee-card {
   display: grid;
   gap: 1rem;
-  border: 1px solid #d7dde5;
+  border: 1px solid var(--color-border);
   border-radius: 0.5rem;
   padding: 1rem;
 }
 
 .attendee-card legend {
-  color: #0f4c81;
+  color: var(--color-primary);
   font-weight: 700;
   padding: 0 0.35rem;
 }
@@ -180,7 +167,7 @@
 }
 
 .validation-message {
-  color: #b42318;
+  color: var(--color-error);
   font-weight: 700;
   margin: 0;
 }
@@ -200,13 +187,13 @@
   display: grid;
   grid-template-columns: 1.2fr 1fr auto;
   gap: 0.75rem;
-  border-bottom: 1px solid #e3e8ef;
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 0.65rem;
 }
 
 .success-panel {
-  border-color: #9bd4ac;
-  background: #f8fffa;
+  border-color: var(--color-success-border);
+  background: var(--color-success-surface);
 }
 
 .confirmation-details {
@@ -217,14 +204,14 @@
 }
 
 .confirmation-details div {
-  border: 1px solid #d7dde5;
+  border: 1px solid var(--color-border);
   border-radius: 0.5rem;
-  background: #ffffff;
+  background: var(--color-surface);
   padding: 1rem;
 }
 
 .confirmation-details dt {
-  color: #536174;
+  color: var(--color-muted);
   font-weight: 700;
 }
 
@@ -239,7 +226,7 @@
   align-items: center;
   justify-content: center;
   min-height: 2.6rem;
-  border: 1px solid #0f4c81;
+  border: 1px solid var(--color-primary);
   border-radius: 0.4rem;
   padding: 0.55rem 0.9rem;
   font-weight: 700;
@@ -247,13 +234,13 @@
 }
 
 .primary-link {
-  background: #0f4c81;
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
 }
 
 .secondary-link {
-  background: #ffffff;
-  color: #0f4c81;
+  background: var(--color-surface);
+  color: var(--color-primary);
 }
 
 .state-panel {
@@ -265,8 +252,8 @@
 }
 
 .error-panel {
-  border-color: #f2a7a0;
-  background: #fff8f7;
+  border-color: var(--color-error-border);
+  background: var(--color-error-surface);
 }
 
 @media (max-width: 760px) {

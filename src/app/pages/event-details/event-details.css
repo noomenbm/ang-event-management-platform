@@ -10,9 +10,9 @@
 .details-layout,
 .ticket-card,
 .state-panel {
-  border: 1px solid #d7dde5;
+  border: 1px solid var(--color-border);
   border-radius: 0.5rem;
-  background: #ffffff;
+  background: var(--color-surface);
 }
 
 .details-layout {
@@ -26,7 +26,7 @@
   height: 100%;
   min-height: 18rem;
   object-fit: contain;
-  background: #eef3f8;
+  background: var(--color-surface-muted);
   padding: 3rem;
 }
 
@@ -40,15 +40,15 @@
 .event-category {
   width: fit-content;
   border-radius: 999px;
-  background: #0f4c81;
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
   font-size: 0.85rem;
   font-weight: 700;
   padding: 0.35rem 0.65rem;
 }
 
 .event-description {
-  color: #384252;
+  color: var(--color-label);
 }
 
 .event-meta {
@@ -59,7 +59,7 @@
 }
 
 .event-meta dt {
-  color: #5d6775;
+  color: var(--color-muted);
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -72,8 +72,8 @@
 .book-link {
   width: fit-content;
   border-radius: 0.4rem;
-  background: #0f4c81;
-  color: #ffffff;
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
   font-weight: 700;
   padding: 0.7rem 1rem;
   text-decoration: none;
@@ -104,7 +104,7 @@
 }
 
 .ticket-price {
-  color: #0f4c81;
+  color: var(--color-primary);
   font-weight: 700;
 }
 
@@ -118,13 +118,23 @@
 }
 
 .error-panel {
-  border-color: #f2a7a0;
-  background: #fff8f7;
+  border-color: var(--color-error-border);
+  background: var(--color-error-surface);
 }
 
 @media (max-width: 760px) {
   .details-layout,
   .event-meta {
     grid-template-columns: 1fr;
+  }
+
+  .event-image {
+    min-height: 12rem;
+    padding: 2rem;
+  }
+
+  .book-link {
+    width: 100%;
+    text-align: center;
   }
 }
