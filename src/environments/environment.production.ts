@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://YOUR-JSON-SERVER-URL.example.com'
+  apiBaseUrl: 'https://ang-event-management-platform.onrender.com'
 } as const;
