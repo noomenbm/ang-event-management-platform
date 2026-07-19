@@ -48,7 +48,7 @@ The application is a standalone Angular event management platform backed by JSON
 - `src/environments` contains local and production API URL settings.
 - `backend/db.json` contains JSON Server sample data.
 
-The frontend and JSON Server backend are prepared as separate deployable pieces. Local development uses `http://localhost:3000` for the API.
+The Angular frontend is a client-side SPA, and the JSON Server backend is hosted separately. Local development uses `http://localhost:3000` for the API.
 
 ## Prerequisites
 
@@ -162,13 +162,15 @@ dist/ang-event-management-platform/browser
 
 ## Frontend Deployment on Vercel
 
+The Angular frontend is deployed as a static client-side SPA on Vercel. SSR, SSG, and hybrid rendering are not used or required for this course project.
+
 Suggested Vercel settings:
 
 - Build command: `npm run build`
 - Output directory: `dist/ang-event-management-platform/browser`
 - Install command: `npm install`
 
-The included `vercel.json` rewrites all frontend routes to `index.html` so direct refreshes such as `/events/1`, `/book/1`, and `/bookings` work as client-side routes.
+The included `vercel.json` rewrites all frontend routes to `index.html` so direct refreshes such as `/events/1`, `/book/1`, and `/bookings` are handled by Angular Router.
 
 After changing `vercel.json`, push the correction to trigger a new Vercel deployment. When the deployment finishes, directly open or refresh `/events/1`, `/book/1`, and `/bookings` to confirm Vercel serves the Angular app instead of a `404 NOT_FOUND` page.
 
