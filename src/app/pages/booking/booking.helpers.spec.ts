@@ -4,8 +4,10 @@ import {
   buildBookingCreatePayload,
   buildBookingTickets,
   clampQuantity,
+  effectiveTicketMaximum,
   generateBookingReference,
   hasSelectedTicket,
+  ticketLimitMessage,
   totalAmount,
   totalTickets
 } from './booking.helpers';
@@ -57,6 +59,19 @@ describe('booking helpers', () => {
     expect(clampQuantity(1.5, 100)).toBe(0);
     expect(clampQuantity(12, 100)).toBe(10);
     expect(clampQuantity(10, 3)).toBe(3);
+    expect(clampQuantity(1, 0)).toBe(0);
+  });
+
+  it('calculates the effective ticket maximum from availability and booking cap', () => {
+    expect(effectiveTicketMaximum(300)).toBe(10);
+    expect(effectiveTicketMaximum(7)).toBe(7);
+    expect(effectiveTicketMaximum(0)).toBe(0);
+  });
+
+  it('describes ticket limits from the effective maximum', () => {
+    expect(ticketLimitMessage(300)).toBe('Up to 10 tickets per booking');
+    expect(ticketLimitMessage(7)).toBe('Up to 7 tickets available');
+    expect(ticketLimitMessage(0)).toBe('Sold out');
   });
 
   it('creates one attendee slot per selected ticket', () => {

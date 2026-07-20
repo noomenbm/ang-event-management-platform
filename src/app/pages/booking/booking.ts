@@ -23,8 +23,10 @@ import {
   buildBookingTickets,
   bookingDateValue,
   clampQuantity,
+  effectiveTicketMaximum,
   generateBookingReference,
   hasSelectedTicket,
+  ticketLimitMessage,
   totalAmount,
   totalTickets
 } from './booking.helpers';
@@ -36,6 +38,7 @@ interface AttendeeForm {
 }
 
 type BookingStep = 1 | 2 | 3;
+type AttendeeField = 'name' | 'email' | 'phone';
 
 @Component({
   selector: 'app-booking',
@@ -119,6 +122,18 @@ export class Booking implements OnInit {
 
   protected ticketQuantity(ticketId: string): number {
     return this.quantities().get(ticketId) ?? 0;
+  }
+
+  protected ticketMaximum(available: number): number {
+    return effectiveTicketMaximum(available);
+  }
+
+  protected ticketLimitMessage(available: number): string {
+    return ticketLimitMessage(available);
+  }
+
+  protected ticketLimitId(ticketId: string): string {
+    return `ticket-${ticketId}-limit`;
   }
 
   protected updateQuantity(ticketId: string, value: string, available: number): void {
@@ -207,7 +222,7 @@ export class Booking implements OnInit {
     const payload = buildBookingCreatePayload(
       selectedEvent,
       this.selectedTickets(),
-      this.attendees.controls.map((control) => control.getRawValue()),
+      this.attendeePayload(),
       generateBookingReference(),
       bookingDateValue()
     );
@@ -238,10 +253,33 @@ export class Booking implements OnInit {
     return `Attendee ${index + 1} - ${slot.ticketType}`;
   }
 
-  protected attendeeNames(): string[] {
-    return this.attendees.controls
-      .map((control) => control.controls.name.value.trim())
-      .filter((name) => name.length > 0);
+  protected attendeeSummary(): { label: string; name: string }[] {
+    return this.attendees.controls.map((control, index) => ({
+      label: this.attendeeLabel(index),
+      name: control.controls.name.value.trim()
+    }));
+  }
+
+  protected fieldErrorId(index: number, field: AttendeeField): string {
+    return `attendee-${index}-${field}-error`;
+  }
+
+  protected nameErrorMessage(control: AbstractControl): string {
+    return control.hasError('required')
+      ? 'Name is required.'
+      : 'Enter a valid name using letters.';
+  }
+
+  protected emailErrorMessage(control: AbstractControl): string {
+    return control.hasError('required')
+      ? 'Email is required.'
+      : 'Enter a valid email address.';
+  }
+
+  protected phoneErrorMessage(control: AbstractControl): string {
+    return control.hasError('required')
+      ? 'Phone number is required.'
+      : 'Enter a valid Canadian or North American phone number.';
   }
 
   protected shouldShowError(control: AbstractControl): boolean {
@@ -266,11 +304,11 @@ export class Booking implements OnInit {
     return this.formBuilder.group({
       name: this.formBuilder.nonNullable.control(attendee?.name ?? '', [
         Validators.required,
-        Validators.minLength(2)
+        attendeeNameValidator
       ]),
       email: this.formBuilder.nonNullable.control(attendee?.email ?? '', [
         Validators.required,
-        Validators.email
+        trimmedEmailValidator
       ]),
       phone: this.formBuilder.nonNullable.control(attendee?.phone ?? '', [
         Validators.required,
@@ -278,10 +316,71 @@ export class Booking implements OnInit {
       ])
     });
   }
+
+  private attendeePayload(): Attendee[] {
+    return this.attendees.controls.map((control) => {
+      const attendee = control.getRawValue();
+
+      return {
+        name: attendee.name.trim(),
+        email: attendee.email.trim(),
+        phone: attendee.phone.trim()
+      };
+    });
+  }
+}
+
+function attendeeNameValidator(control: AbstractControl<string>): ValidationErrors | null {
+  const value = control.value.trim();
+
+  if (!value) {
+    return null;
+  }
+
+  const allowedCharacters = /^[\p{L}\s'-]+$/u;
+  const meaningfulCharacters = value.replace(/[\s'-]/gu, '');
+
+  if (
+    meaningfulCharacters.length < 2 ||
+    !/\p{L}/u.test(value) ||
+    !allowedCharacters.test(value)
+  ) {
+    return { attendeeName: true };
+  }
+
+  return null;
+}
+
+function trimmedEmailValidator(control: AbstractControl<string>): ValidationErrors | null {
+  const value = control.value.trim();
+
+  if (!value) {
+    return null;
+  }
+
+  return Validators.email(new FormControl(value));
 }
 
 function phoneValidator(control: AbstractControl<string>): ValidationErrors | null {
-  const digitCount = control.value.replace(/\D/g, '').length;
+  const value = control.value.trim();
 
-  return digitCount >= 10 ? null : { phone: true };
+  if (!value) {
+    return null;
+  }
+
+  if (!/^\+?[\d\s().-]+$/.test(value)) {
+    return { phone: true };
+  }
+
+  const digits = value.replace(/\D/g, '');
+
+  if (digits.length === 10) {
+    return null;
+  }
+
+  if (digits.length === 11 && digits.startsWith('1')) {
+    return null;
+  }
+
+  return { phone: true };
 }

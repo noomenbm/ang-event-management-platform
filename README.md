@@ -12,7 +12,7 @@ The application is a standalone Angular event management platform backed by JSON
 - Search by event title
 - Category, date, and price filters
 - Date and price sorting
-- Session-only favorite buttons
+- Favorite buttons saved in browser localStorage
 - Event Details page with organizer and ticket information
 - Three-step booking flow
 - Ticket quantity selection with real-time totals
@@ -242,5 +242,5 @@ https://github.com/noomenbm/ang-event-management-platform
 - Fixed demo user: `user1`
 - JSON Server is a demonstration backend
 - Ticket availability is not reduced after booking
-- Favorites last only for the current browser session
+- Favorite events are stored locally in the current browser only
 - No payment processing

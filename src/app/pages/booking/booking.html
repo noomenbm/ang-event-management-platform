@@ -61,6 +61,15 @@
           </div>
         </dl>
 
+        @if (booking.attendees.length > 0) {
+          <h3>Attendees</h3>
+          <ul class="summary-list">
+            @for (attendee of booking.attendees; track $index) {
+              <li>{{ attendee.name }}</li>
+            }
+          </ul>
+        }
+
         <div class="button-row">
           <a class="secondary-link" routerLink="/events">Back to Events</a>
           <a class="primary-link" routerLink="/bookings">View My Bookings</a>
@@ -92,18 +101,24 @@
                   </p>
                 </div>
 
-                <label>
-                  Quantity
+                <div class="form-field">
+                  <label [for]="'ticket-' + ticket.id + '-quantity'">Quantity</label>
                   <input
                     #quantityInput
+                    [id]="'ticket-' + ticket.id + '-quantity'"
                     type="number"
                     min="0"
-                    [max]="ticket.available < 10 ? ticket.available : 10"
+                    [max]="ticketMaximum(ticket.available)"
                     step="1"
                     [value]="ticketQuantity(ticket.id)"
+                    [disabled]="ticketMaximum(ticket.available) === 0"
+                    [attr.aria-describedby]="ticketLimitId(ticket.id)"
                     (input)="updateQuantity(ticket.id, quantityInput.value, ticket.available)"
                   />
-                </label>
+                  <p class="ticket-limit-message" [id]="ticketLimitId(ticket.id)">
+                    {{ ticketLimitMessage(ticket.available) }}
+                  </p>
+                </div>
               </article>
             }
           </div>
@@ -154,29 +169,62 @@
                   <legend>{{ attendeeLabel($index) }}</legend>
 
                   <div class="form-grid">
-                    <label>
-                      Name
-                      <input type="text" formControlName="name" />
-                    </label>
-                    @if (shouldShowError(attendeeGroup.controls.name)) {
-                      <p class="validation-message">Enter a name with at least 2 characters.</p>
-                    }
+                    <div class="form-field">
+                      <label [for]="'attendee-' + $index + '-name'">Name</label>
+                      <input
+                        [id]="'attendee-' + $index + '-name'"
+                        type="text"
+                        formControlName="name"
+                        [attr.aria-describedby]="
+                          shouldShowError(attendeeGroup.controls.name)
+                            ? fieldErrorId($index, 'name')
+                            : null
+                        "
+                      />
+                      @if (shouldShowError(attendeeGroup.controls.name)) {
+                        <p class="validation-message" [id]="fieldErrorId($index, 'name')">
+                          {{ nameErrorMessage(attendeeGroup.controls.name) }}
+                        </p>
+                      }
+                    </div>
 
-                    <label>
-                      Email
-                      <input type="email" formControlName="email" />
-                    </label>
-                    @if (shouldShowError(attendeeGroup.controls.email)) {
-                      <p class="validation-message">Enter a valid email address.</p>
-                    }
+                    <div class="form-field">
+                      <label [for]="'attendee-' + $index + '-email'">Email</label>
+                      <input
+                        [id]="'attendee-' + $index + '-email'"
+                        type="email"
+                        formControlName="email"
+                        [attr.aria-describedby]="
+                          shouldShowError(attendeeGroup.controls.email)
+                            ? fieldErrorId($index, 'email')
+                            : null
+                        "
+                      />
+                      @if (shouldShowError(attendeeGroup.controls.email)) {
+                        <p class="validation-message" [id]="fieldErrorId($index, 'email')">
+                          {{ emailErrorMessage(attendeeGroup.controls.email) }}
+                        </p>
+                      }
+                    </div>
 
-                    <label>
-                      Phone
-                      <input type="tel" formControlName="phone" />
-                    </label>
-                    @if (shouldShowError(attendeeGroup.controls.phone)) {
-                      <p class="validation-message">Enter a phone number with at least 10 digits.</p>
-                    }
+                    <div class="form-field">
+                      <label [for]="'attendee-' + $index + '-phone'">Phone</label>
+                      <input
+                        [id]="'attendee-' + $index + '-phone'"
+                        type="tel"
+                        formControlName="phone"
+                        [attr.aria-describedby]="
+                          shouldShowError(attendeeGroup.controls.phone)
+                            ? fieldErrorId($index, 'phone')
+                            : null
+                        "
+                      />
+                      @if (shouldShowError(attendeeGroup.controls.phone)) {
+                        <p class="validation-message" [id]="fieldErrorId($index, 'phone')">
+                          {{ phoneErrorMessage(attendeeGroup.controls.phone) }}
+                        </p>
+                      }
+                    </div>
                   </div>
                 </fieldset>
               }
@@ -215,8 +263,8 @@
 
           <h3>Attendees</h3>
           <ul class="summary-list">
-            @for (name of attendeeNames(); track name) {
-              <li>{{ name }}</li>
+            @for (attendee of attendeeSummary(); track attendee.label) {
+              <li>{{ attendee.label }}: {{ attendee.name }}</li>
             }
           </ul>
 

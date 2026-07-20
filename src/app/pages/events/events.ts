@@ -4,6 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { Event } from '../../models';
 import { EventsService } from '../../services/events.service';
+import { FavoriteEventsService } from '../../services/favorite-events.service';
 import {
   CategoryFilter,
   DateFilter,
@@ -24,6 +25,7 @@ import { EventCard } from '../../shared/event-card/event-card';
 export class Events implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly eventsService = inject(EventsService);
+  private readonly favoriteEventsService = inject(FavoriteEventsService);
 
   protected readonly allEvents = signal<Event[]>([]);
   protected readonly categoryFilter = signal<CategoryFilter>(
@@ -36,7 +38,9 @@ export class Events implements OnInit {
   protected readonly availableEvents = computed(() =>
     this.allEvents().filter((event) => isEventUpcoming(event.date))
   );
-  protected readonly favoriteIds = signal<ReadonlySet<string>>(new Set<string>());
+  protected readonly favoriteIds = signal<ReadonlySet<string>>(
+    this.favoriteEventsService.loadFavoriteIds()
+  );
   protected readonly filteredEvents = computed(() =>
     discoverEvents(this.allEvents(), {
       searchTerm: this.searchTerm(),
@@ -104,14 +108,8 @@ export class Events implements OnInit {
   }
 
   protected toggleFavorite(eventId: string): void {
-    const nextFavorites = new Set(this.favoriteIds());
-
-    if (nextFavorites.has(eventId)) {
-      nextFavorites.delete(eventId);
-    } else {
-      nextFavorites.add(eventId);
-    }
-
-    this.favoriteIds.set(nextFavorites);
+    this.favoriteIds.set(
+      this.favoriteEventsService.toggleFavorite(this.favoriteIds(), eventId)
+    );
   }
 }

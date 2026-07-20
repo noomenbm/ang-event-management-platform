@@ -6,12 +6,32 @@ export interface AttendeeSlot {
   index: number;
 }
 
+export const MAX_TICKETS_PER_TYPE = 10;
+
+export function effectiveTicketMaximum(available: number): number {
+  return Math.min(Math.max(available, 0), MAX_TICKETS_PER_TYPE);
+}
+
+export function ticketLimitMessage(available: number): string {
+  const maximum = effectiveTicketMaximum(available);
+
+  if (maximum === 0) {
+    return 'Sold out';
+  }
+
+  if (maximum < MAX_TICKETS_PER_TYPE) {
+    return `Up to ${maximum} tickets available`;
+  }
+
+  return `Up to ${MAX_TICKETS_PER_TYPE} tickets per booking`;
+}
+
 export function clampQuantity(value: number, available: number): number {
   if (!Number.isInteger(value) || value < 0) {
     return 0;
   }
 
-  return Math.min(value, Math.min(available, 10));
+  return Math.min(value, effectiveTicketMaximum(available));
 }
 
 export function buildBookingTickets(
