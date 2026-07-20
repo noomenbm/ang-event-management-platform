@@ -15,6 +15,9 @@ export interface Event {
   location: string;
   venue: string;
   image: string;
+  imageAuthor?: string;
+  imageAuthorUrl?: string;
+  imageSourceUrl?: string;
   organizerName: string;
   ticketTypes: TicketType[];
 }

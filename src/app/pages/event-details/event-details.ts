@@ -5,6 +5,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Event } from '../../models';
 import { EventsService } from '../../services/events.service';
 import { isEventPast } from '../../shared/date-utils';
+import { EVENT_IMAGE_FALLBACK } from '../../shared/event-images';
 
 @Component({
   selector: 'app-event-details',
@@ -52,5 +53,15 @@ export class EventDetails implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+
+  protected useFallbackImage(imageEvent: globalThis.Event): void {
+    const image = imageEvent.target as HTMLImageElement;
+
+    if (image.src.endsWith(EVENT_IMAGE_FALLBACK)) {
+      return;
+    }
+
+    image.src = EVENT_IMAGE_FALLBACK;
   }
 }

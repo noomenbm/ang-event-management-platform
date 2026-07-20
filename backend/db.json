@@ -9,7 +9,10 @@
       "time": "09:00 AM",
       "location": "Toronto, ON",
       "venue": "Metro Toronto Convention Centre",
-      "image": "/favicon.ico",
+      "image": "https://images.unsplash.com/photo-1561489396-888724a1543d?auto=format&fit=crop&w=900&q=80",
+      "imageAuthor": "Evangeline Shaw",
+      "imageAuthorUrl": "https://unsplash.com/@evangelineshaw?utm_source=event_management_platform&utm_medium=referral",
+      "imageSourceUrl": "https://unsplash.com/photos/people-in-conference-nwLTVwb7DbU?utm_source=event_management_platform&utm_medium=referral",
       "organizerName": "Tech Events Canada",
       "ticketTypes": [
         { "id": "1", "name": "General", "price": 99, "available": 120 },
@@ -26,7 +29,10 @@
       "time": "07:30 PM",
       "location": "Toronto, ON",
       "venue": "Harbourfront Stage",
-      "image": "/favicon.ico",
+      "image": "https://images.unsplash.com/photo-1563841930606-67e2bce48b78?auto=format&fit=crop&w=900&q=80",
+      "imageAuthor": "Muneeb S",
+      "imageAuthorUrl": "https://unsplash.com/@muneebs?utm_source=event_management_platform&utm_medium=referral",
+      "imageSourceUrl": "https://unsplash.com/photos/crowd-and-stage-4_M8uIfPEZw?utm_source=event_management_platform&utm_medium=referral",
       "organizerName": "City Music Collective",
       "ticketTypes": [
         { "id": "1", "name": "General", "price": 35, "available": 250 },
@@ -42,7 +48,10 @@
       "time": "10:00 AM",
       "location": "Mississauga, ON",
       "venue": "Central Library Learning Lab",
-      "image": "/favicon.ico",
+      "image": "https://images.unsplash.com/photo-1759884247173-3db27f7fafef?auto=format&fit=crop&w=900&q=80",
+      "imageAuthor": "Compagnons",
+      "imageAuthorUrl": "https://unsplash.com/@sigmund?utm_source=event_management_platform&utm_medium=referral",
+      "imageSourceUrl": "https://unsplash.com/photos/people-working-on-laptops-at-a-table-Uywp-JHgVP4?utm_source=event_management_platform&utm_medium=referral",
       "organizerName": "Peel Digital Skills",
       "ticketTypes": [
         { "id": "1", "name": "General", "price": 0, "available": 80 }
@@ -57,7 +66,10 @@
       "time": "08:00 AM",
       "location": "Toronto, ON",
       "venue": "Nathan Phillips Square",
-      "image": "/favicon.ico",
+      "image": "https://images.unsplash.com/photo-1745790289741-12a211a8325d?auto=format&fit=crop&w=900&q=80",
+      "imageAuthor": "Henry Ren",
+      "imageAuthorUrl": "https://unsplash.com/@henryren?utm_source=event_management_platform&utm_medium=referral",
+      "imageSourceUrl": "https://unsplash.com/photos/runners-participate-in-a-marathon-on-a-city-street-8pNsZRjxtnw?utm_source=event_management_platform&utm_medium=referral",
       "organizerName": "Active Toronto",
       "ticketTypes": [
         { "id": "1", "name": "Runner", "price": 50, "available": 300 },
@@ -73,7 +85,10 @@
       "time": "01:00 PM",
       "location": "Toronto, ON",
       "venue": "Artscape Daniels Launchpad",
-      "image": "/favicon.ico",
+      "image": "https://images.unsplash.com/photo-1774887679529-7fb933596f37?auto=format&fit=crop&w=900&q=80",
+      "imageAuthor": "Darien Attridge",
+      "imageAuthorUrl": "https://unsplash.com/@dariendesigns?utm_source=event_management_platform&utm_medium=referral",
+      "imageSourceUrl": "https://unsplash.com/photos/art-supplies-including-tape-stapler-and-paint-tubes-VUMsjKOWCWY?utm_source=event_management_platform&utm_medium=referral",
       "organizerName": "North Studio Arts",
       "ticketTypes": [
         { "id": "1", "name": "General", "price": 65, "available": 35 },
@@ -89,7 +104,10 @@
       "time": "11:00 AM",
       "location": "Brampton, ON",
       "venue": "Rose Theatre Conference Hall",
-      "image": "/favicon.ico",
+      "image": "https://images.unsplash.com/photo-1756900737286-af0daa63d40b?auto=format&fit=crop&w=900&q=80",
+      "imageAuthor": "Skytech Aviation",
+      "imageAuthorUrl": "https://unsplash.com/@skytechaviation0?utm_source=event_management_platform&utm_medium=referral",
+      "imageSourceUrl": "https://unsplash.com/photos/man-presenting-to-an-audience-in-a-conference-room-MXbjNGA3JVg?utm_source=event_management_platform&utm_medium=referral",
       "organizerName": "Greater Toronto Business Network",
       "ticketTypes": [
         { "id": "1", "name": "General", "price": 40, "available": 90 },
@@ -105,7 +123,10 @@
       "time": "06:00 PM",
       "location": "Toronto, ON",
       "venue": "MaRS Discovery District",
-      "image": "/favicon.ico",
+      "image": "https://images.unsplash.com/photo-1534665482403-a909d0d97c67?auto=format&fit=crop&w=900&q=80",
+      "imageAuthor": "Danial Igdery",
+      "imageAuthorUrl": "https://unsplash.com/@ricaros?utm_source=event_management_platform&utm_medium=referral",
+      "imageSourceUrl": "https://unsplash.com/photos/man-programming-using-laptop-FCHlYvR5gJI?utm_source=event_management_platform&utm_medium=referral",
       "organizerName": "Product Builders TO",
       "ticketTypes": [
         { "id": "1", "name": "General", "price": 15, "available": 100 }
@@ -120,7 +141,10 @@
       "time": "05:00 PM",
       "location": "Etobicoke, ON",
       "venue": "Centennial Park",
-      "image": "/favicon.ico",
+      "image": "https://images.unsplash.com/photo-1563841930606-67e2bce48b78?auto=format&fit=crop&w=900&q=80",
+      "imageAuthor": "Muneeb S",
+      "imageAuthorUrl": "https://unsplash.com/@muneebs?utm_source=event_management_platform&utm_medium=referral",
+      "imageSourceUrl": "https://unsplash.com/photos/crowd-and-stage-4_M8uIfPEZw?utm_source=event_management_platform&utm_medium=referral",
       "organizerName": "Etobicoke Arts Council",
       "ticketTypes": [
         { "id": "1", "name": "General", "price": 0, "available": 400 },
@@ -136,7 +160,10 @@
       "time": "12:00 PM",
       "location": "Toronto, ON",
       "venue": "Evergreen Brick Works",
-      "image": "/favicon.ico",
+      "image": "https://images.unsplash.com/photo-1763026387031-3b398fd2ba84?auto=format&fit=crop&w=900&q=80",
+      "imageAuthor": "Adrien Olichon",
+      "imageAuthorUrl": "https://unsplash.com/@adrienolichon?utm_source=event_management_platform&utm_medium=referral",
+      "imageSourceUrl": "https://unsplash.com/photos/people-shopping-at-a-vibrant-farmers-market-with-fresh-produce-un_T1HN-Y-A?utm_source=event_management_platform&utm_medium=referral",
       "organizerName": "Local Makers Guild",
       "ticketTypes": [
         { "id": "1", "name": "General", "price": 10, "available": 500 }
@@ -151,7 +178,10 @@
       "time": "03:00 PM",
       "location": "Toronto, ON",
       "venue": "Mattamy Athletic Centre",
-      "image": "/favicon.ico",
+      "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1190&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageAuthor": "Andy Abelein",
+      "imageAuthorUrl": "https://unsplash.com/@andyabelein?utm_source=event_management_platform&utm_medium=referral",
+      "imageSourceUrl": "https://unsplash.com/photos/basketball-court-m1s_nIM5zQU?utm_source=event_management_platform&utm_medium=referral",
       "organizerName": "Ontario Hoops Association",
       "ticketTypes": [
         { "id": "1", "name": "General", "price": 55, "available": 180 },
@@ -167,7 +197,10 @@
       "time": "06:30 PM",
       "location": "Toronto, ON",
       "venue": "Queen West Gallery",
-      "image": "/favicon.ico",
+      "image": "https://images.unsplash.com/photo-1774887679529-7fb933596f37?auto=format&fit=crop&w=900&q=80",
+      "imageAuthor": "Darien Attridge",
+      "imageAuthorUrl": "https://unsplash.com/@dariendesigns?utm_source=event_management_platform&utm_medium=referral",
+      "imageSourceUrl": "https://unsplash.com/photos/art-supplies-including-tape-stapler-and-paint-tubes-VUMsjKOWCWY?utm_source=event_management_platform&utm_medium=referral",
       "organizerName": "Queen West Arts Society",
       "ticketTypes": [
         { "id": "1", "name": "General", "price": 25, "available": 0 }

@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 
 import { Event } from '../../models';
 import { getLowestTicketPrice } from '../event-discovery';
+import { EVENT_IMAGE_FALLBACK } from '../event-images';
 
 @Component({
   selector: 'app-event-card',
@@ -43,5 +44,15 @@ export class EventCard {
 
   toggleFavorite(): void {
     this.favoriteToggled.emit(this.event.id);
+  }
+
+  useFallbackImage(imageEvent: globalThis.Event): void {
+    const image = imageEvent.target as HTMLImageElement;
+
+    if (image.src.endsWith(EVENT_IMAGE_FALLBACK)) {
+      return;
+    }
+
+    image.src = EVENT_IMAGE_FALLBACK;
   }
 }

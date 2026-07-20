@@ -4,6 +4,7 @@
       class="event-image"
       [src]="event.image"
       [alt]="event.title + ' event image'"
+      (error)="useFallbackImage($event)"
     />
     <span class="event-category">{{ event.category }}</span>
   </div>

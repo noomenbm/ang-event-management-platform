@@ -12,11 +12,26 @@
     </div>
   } @else if (event(); as selectedEvent) {
     <article class="details-layout">
-      <img
-        class="event-image"
-        [src]="selectedEvent.image"
-        [alt]="selectedEvent.title + ' event image'"
-      />
+      <figure class="event-media">
+        <img
+          class="event-image"
+          [src]="selectedEvent.image"
+          [alt]="selectedEvent.title + ' event image'"
+          (error)="useFallbackImage($event)"
+        />
+        @if (selectedEvent.imageAuthor && selectedEvent.imageAuthorUrl && selectedEvent.imageSourceUrl) {
+          <figcaption class="image-credit">
+            Photo by
+            <a [href]="selectedEvent.imageAuthorUrl" target="_blank" rel="noopener noreferrer">
+              {{ selectedEvent.imageAuthor }}
+            </a>
+            on
+            <a [href]="selectedEvent.imageSourceUrl" target="_blank" rel="noopener noreferrer">
+              Unsplash
+            </a>
+          </figcaption>
+        }
+      </figure>
 
       <div class="event-content">
         <p class="event-category">{{ selectedEvent.category }}</p>

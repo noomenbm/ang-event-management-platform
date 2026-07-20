@@ -168,7 +168,7 @@ function createEvent(
     time: '09:00 AM',
     location: 'Toronto, ON',
     venue: 'Test Venue',
-    image: '/favicon.ico',
+    image: 'https://images.unsplash.com/photo-1561489396-888724a1543d?auto=format&fit=crop&w=900&q=80',
     organizerName: 'Test Organizer',
     ticketTypes: prices.map((price, index) => ({
       id: String(index + 1),
