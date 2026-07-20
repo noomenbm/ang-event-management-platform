@@ -4,7 +4,7 @@ Angular course project for browsing events, viewing event details, creating book
 
 ## Project Overview
 
-The application is a standalone Angular event management platform backed by JSON Server sample data. It demonstrates client-side routing, API services, reusable components, reactive forms, local UI state, loading and error states, and deployment preparation for a separate frontend and backend.
+The application is a standalone Angular event management platform with the Angular frontend deployed on Vercel and the JSON Server backend hosted separately on Render. It demonstrates Angular routing, reusable components, services, reactive forms, localStorage, API integration, loading/error/empty states, and responsive design.
 
 ## Main Features
 
@@ -48,7 +48,7 @@ The application is a standalone Angular event management platform backed by JSON
 - `src/environments` contains local and production API URL settings.
 - `backend/db.json` contains JSON Server sample data.
 
-The Angular frontend is a client-side SPA, and the JSON Server backend is hosted separately. Local development uses `http://localhost:3000` for the API.
+The Angular frontend is a client-side SPA, and the JSON Server backend is hosted separately on Render. Local development uses `http://localhost:3000` for the API.
 
 ## Prerequisites
 
@@ -162,7 +162,7 @@ dist/ang-event-management-platform/browser
 
 ## Frontend Deployment on Vercel
 
-The Angular frontend is deployed as a static client-side SPA on Vercel. SSR, SSG, and hybrid rendering are not used or required for this course project.
+The Angular frontend is deployed as a static client-side SPA on Vercel.
 
 Suggested Vercel settings:
 
@@ -171,8 +171,6 @@ Suggested Vercel settings:
 - Install command: `npm install`
 
 The included `vercel.json` rewrites all frontend routes to `index.html` so direct refreshes such as `/events/1`, `/book/1`, and `/bookings` are handled by Angular Router.
-
-After changing `vercel.json`, push the correction to trigger a new Vercel deployment. When the deployment finishes, directly open or refresh `/events/1`, `/book/1`, and `/bookings` to confirm Vercel serves the Angular app instead of a `404 NOT_FOUND` page.
 
 ## Backend Deployment on Render
 
@@ -186,11 +184,7 @@ Suggested Render settings:
 
 The production server script binds to `0.0.0.0` and uses the host-provided `PORT`.
 
-Current production backend:
-
-```text
-https://ang-event-management-platform.onrender.com
-```
+Production backend: https://ang-event-management-platform.onrender.com
 
 ## Production API URL
 
@@ -214,33 +208,23 @@ https://ang-event-management-platform.onrender.com
 
 The app reads the API URL through `src/app/config/api.config.ts`, so API URLs are not scattered through the codebase.
 
-## Screenshots
-
-Screenshots are not included yet. Suggested captures:
-
-- Events listing in light mode
-- Events listing in dark mode
-- Event Details page
-- Booking confirmation
-- My Bookings cancellation dialog
-
 ## Live Demo
 
-Live demo: not deployed yet.
+- Frontend: https://ang-event-management-platform.vercel.app
+- Backend API: https://ang-event-management-platform.onrender.com
+
+The Render free instance may take several seconds to respond after a period of inactivity.
 
 ## Repository
 
-GitHub repository:
-
-```text
-https://github.com/noomenbm/ang-event-management-platform
-```
+GitHub repository: https://github.com/noomenbm/ang-event-management-platform
 
 ## Known Limitations
 
 - No authentication
 - Fixed demo user: `user1`
 - JSON Server is a demonstration backend
+- Hosted booking data may reset after a Render restart or redeployment
 - Ticket availability is not reduced after booking
 - Favorite events are stored locally in the current browser only
 - No payment processing
